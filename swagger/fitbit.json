@@ -1,0 +1,1740 @@
+{
+   "openapi": "3.0.1",
+   "info": {
+      "title": "Fitbit",
+      "description": "https://api.health.apple.com/ specs",
+      "contact": {
+         "name": "demo",
+         "email": "demo@axway.com"
+      },
+      "version": "7.2-rev1",
+      "x-summary": "Tout l'accompagnement dont vous avez besoin, directement au poignet"
+   },
+   "security": [
+      {
+         "API Key": []
+      }
+   ],
+   "tags": [
+      {
+         "name": "apple"
+      },
+      {
+         "name": "medications"
+      }
+   ],
+   "paths": {
+      "/blood_glucose/readings": {
+         "get": {
+            "summary": "Blood Glucose",
+            "description": "Return all blood glucose readings",
+            "operationId": "get-human-blood_glucose-readings",
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "maxItems": 3,
+                           "type": "array",
+                           "items": {
+                              "title": "BloodGlucoseResp",
+                              "allOf": [
+                                 {
+                                    "title": "WearableBaseResp",
+                                    "allOf": [
+                                       {
+                                          "title": "BaseResp",
+                                          "required": [
+                                             "createdAt",
+                                             "id",
+                                             "source",
+                                             "updatedAt"
+                                          ],
+                                          "type": "object",
+                                          "properties": {
+                                             "createdAt": {
+                                                "type": "string"
+                                             },
+                                             "source": {
+                                                "minLength": 1,
+                                                "type": "string",
+                                                "enum": [
+                                                   "encounter",
+                                                   "narrative",
+                                                   "diagnosed"
+                                                ]
+                                             },
+                                             "id": {
+                                                "minLength": 1,
+                                                "pattern": "[0-9a-f]{24}",
+                                                "type": "string"
+                                             },
+                                             "updatedAt": {
+                                                "type": "string"
+                                             }
+                                          }
+                                       },
+                                       {
+                                          "required": [
+                                             "humanId",
+                                             "timestamp"
+                                          ],
+                                          "type": "object",
+                                          "properties": {
+                                             "humanId": {
+                                                "pattern": "[0-9a-f]{24}",
+                                                "type": "string"
+                                             },
+                                             "timestamp": {
+                                                "title": "Date",
+                                                "type": "string",
+                                                "format": "date-time"
+                                             }
+                                          }
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "required": [
+                                       "mealTag",
+                                       "medicationTag",
+                                       "notes",
+                                       "unit",
+                                       "value"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                       "unit": {
+                                          "type": "string",
+                                          "enum": [
+                                             "mg/dl"
+                                          ]
+                                       },
+                                       "notes": {
+                                          "type": "string",
+                                          "enum": [
+                                             "-"
+                                          ]
+                                       },
+                                       "medicationTag": {
+                                          "type": "string",
+                                          "enum": [
+                                             "before medication",
+                                             "after medication"
+                                          ]
+                                       },
+                                       "value": {
+                                          "maximum": 130,
+                                          "minimum": 80,
+                                          "type": "number"
+                                       },
+                                       "mealTag": {
+                                          "type": "string",
+                                          "enum": [
+                                             "before meal",
+                                             "after meal"
+                                          ]
+                                       }
+                                    }
+                                 }
+                              ]
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/heart_rate/readings/{id}": {
+         "get": {
+            "summary": "Get a Heart Rate Reading",
+            "description": "Get a specific heart rate reading",
+            "operationId": "get-human-heart_rate-readings-id",
+            "parameters": [
+               {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "title": "HeartRateResp",
+                           "allOf": [
+                              {
+                                 "title": "WearableBaseResp",
+                                 "allOf": [
+                                    {
+                                       "title": "BaseResp",
+                                       "required": [
+                                          "createdAt",
+                                          "id",
+                                          "source",
+                                          "updatedAt"
+                                       ],
+                                       "type": "object",
+                                       "properties": {
+                                          "createdAt": {
+                                             "type": "string"
+                                          },
+                                          "source": {
+                                             "minLength": 1,
+                                             "type": "string",
+                                             "enum": [
+                                                "encounter",
+                                                "narrative",
+                                                "diagnosed"
+                                             ]
+                                          },
+                                          "id": {
+                                             "minLength": 1,
+                                             "pattern": "[0-9a-f]{24}",
+                                             "type": "string"
+                                          },
+                                          "updatedAt": {
+                                             "type": "string"
+                                          }
+                                       }
+                                    },
+                                    {
+                                       "required": [
+                                          "humanId",
+                                          "timestamp"
+                                       ],
+                                       "type": "object",
+                                       "properties": {
+                                          "humanId": {
+                                             "pattern": "[0-9a-f]{24}",
+                                             "type": "string"
+                                          },
+                                          "timestamp": {
+                                             "title": "Date",
+                                             "type": "string",
+                                             "format": "date-time"
+                                          }
+                                       }
+                                    }
+                                 ]
+                              },
+                              {
+                                 "type": "object",
+                                 "properties": {
+                                    "unit": {
+                                       "type": "string",
+                                       "enum": [
+                                          "bpm"
+                                       ]
+                                    },
+                                    "value": {
+                                       "maximum": 200,
+                                       "minimum": 35,
+                                       "type": "integer"
+                                    }
+                                 }
+                              }
+                           ]
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/activities/{id}": {
+         "get": {
+            "summary": "Activities",
+            "description": "Returns a single activity segment",
+            "operationId": "get-human-activities-id",
+            "parameters": [
+               {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "allOf": [
+                              {
+                                 "title": "WearableBaseResp",
+                                 "allOf": [
+                                    {
+                                       "title": "BaseResp",
+                                       "required": [
+                                          "createdAt",
+                                          "id",
+                                          "source",
+                                          "updatedAt"
+                                       ],
+                                       "type": "object",
+                                       "properties": {
+                                          "createdAt": {
+                                             "type": "string"
+                                          },
+                                          "source": {
+                                             "minLength": 1,
+                                             "type": "string",
+                                             "enum": [
+                                                "encounter",
+                                                "narrative",
+                                                "diagnosed"
+                                             ]
+                                          },
+                                          "id": {
+                                             "minLength": 1,
+                                             "pattern": "[0-9a-f]{24}",
+                                             "type": "string"
+                                          },
+                                          "updatedAt": {
+                                             "type": "string"
+                                          }
+                                       }
+                                    },
+                                    {
+                                       "required": [
+                                          "humanId",
+                                          "timestamp"
+                                       ],
+                                       "type": "object",
+                                       "properties": {
+                                          "humanId": {
+                                             "pattern": "[0-9a-f]{24}",
+                                             "type": "string"
+                                          },
+                                          "timestamp": {
+                                             "title": "Date",
+                                             "type": "string",
+                                             "format": "date-time"
+                                          }
+                                       }
+                                    }
+                                 ]
+                              },
+                              {
+                                 "required": [
+                                    "calories",
+                                    "distance",
+                                    "duration",
+                                    "endTime",
+                                    "sourceData",
+                                    "startTime",
+                                    "steps",
+                                    "type"
+                                 ],
+                                 "type": "object",
+                                 "properties": {
+                                    "duration": {
+                                       "maximum": 3000,
+                                       "minimum": 300,
+                                       "type": "integer"
+                                    },
+                                    "distance": {
+                                       "maximum": 30000,
+                                       "minimum": 3000,
+                                       "type": "integer"
+                                    },
+                                    "startTime": {
+                                       "type": "string"
+                                    },
+                                    "calories": {
+                                       "maximum": 500,
+                                       "minimum": 200,
+                                       "type": "integer"
+                                    },
+                                    "endTime": {
+                                       "type": "string"
+                                    },
+                                    "sourceData": {
+                                       "type": "object"
+                                    },
+                                    "type": {
+                                       "type": "string",
+                                       "enum": [
+                                          "walking",
+                                          "running",
+                                          "cycling"
+                                       ]
+                                    },
+                                    "steps": {
+                                       "maximum": 20000,
+                                       "minimum": 2000,
+                                       "type": "integer"
+                                    }
+                                 }
+                              }
+                           ]
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/sleeps": {
+         "get": {
+            "summary": "Sleeps",
+            "description": "Get a list of sleeps the user has",
+            "operationId": "get-human-sleeps",
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "maxItems": 5,
+                           "minItems": 1,
+                           "type": "array",
+                           "items": {
+                              "title": "SleepResp",
+                              "allOf": [
+                                 {
+                                    "title": "WearableBaseResp",
+                                    "allOf": [
+                                       {
+                                          "title": "BaseResp",
+                                          "required": [
+                                             "createdAt",
+                                             "id",
+                                             "source",
+                                             "updatedAt"
+                                          ],
+                                          "type": "object",
+                                          "properties": {
+                                             "createdAt": {
+                                                "type": "string"
+                                             },
+                                             "source": {
+                                                "minLength": 1,
+                                                "type": "string",
+                                                "enum": [
+                                                   "encounter",
+                                                   "narrative",
+                                                   "diagnosed"
+                                                ]
+                                             },
+                                             "id": {
+                                                "minLength": 1,
+                                                "pattern": "[0-9a-f]{24}",
+                                                "type": "string"
+                                             },
+                                             "updatedAt": {
+                                                "type": "string"
+                                             }
+                                          }
+                                       },
+                                       {
+                                          "required": [
+                                             "humanId",
+                                             "timestamp"
+                                          ],
+                                          "type": "object",
+                                          "properties": {
+                                             "humanId": {
+                                                "pattern": "[0-9a-f]{24}",
+                                                "type": "string"
+                                             },
+                                             "timestamp": {
+                                                "title": "Date",
+                                                "type": "string",
+                                                "format": "date-time"
+                                             }
+                                          }
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "type": "object",
+                                    "properties": {
+                                       "efficiency": {
+                                          "maximum": 1,
+                                          "minimum": 0,
+                                          "type": "number"
+                                       },
+                                       "mainSleep": {
+                                          "type": "boolean"
+                                       },
+                                       "numberOfWakeups": {
+                                          "maximum": 3,
+                                          "minimum": 0,
+                                          "type": "integer"
+                                       },
+                                       "timeAfterWakeup": {
+                                          "maximum": 30,
+                                          "minimum": 0,
+                                          "type": "integer"
+                                       },
+                                       "timeToFallAsleep": {
+                                          "maximum": 20,
+                                          "minimum": 0,
+                                          "type": "integer"
+                                       },
+                                       "startTime": {
+                                          "pattern": "2[1-3]:[0-5][0-9]",
+                                          "type": "string"
+                                       },
+                                       "endTime": {
+                                          "pattern": "0[6-9]:[0-5][0-9]",
+                                          "type": "string"
+                                       },
+                                       "day": {
+                                          "type": "string"
+                                       }
+                                    }
+                                 }
+                              ]
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/sleeps/{id}": {
+         "get": {
+            "summary": "Get a sleep",
+            "description": "Get a single sleep",
+            "operationId": "get-human-sleeps-id",
+            "parameters": [
+               {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "title": "SleepResp",
+                           "allOf": [
+                              {
+                                 "title": "WearableBaseResp",
+                                 "allOf": [
+                                    {
+                                       "title": "BaseResp",
+                                       "required": [
+                                          "createdAt",
+                                          "id",
+                                          "source",
+                                          "updatedAt"
+                                       ],
+                                       "type": "object",
+                                       "properties": {
+                                          "createdAt": {
+                                             "type": "string"
+                                          },
+                                          "source": {
+                                             "minLength": 1,
+                                             "type": "string",
+                                             "enum": [
+                                                "encounter",
+                                                "narrative",
+                                                "diagnosed"
+                                             ]
+                                          },
+                                          "id": {
+                                             "minLength": 1,
+                                             "pattern": "[0-9a-f]{24}",
+                                             "type": "string"
+                                          },
+                                          "updatedAt": {
+                                             "type": "string"
+                                          }
+                                       }
+                                    },
+                                    {
+                                       "required": [
+                                          "humanId",
+                                          "timestamp"
+                                       ],
+                                       "type": "object",
+                                       "properties": {
+                                          "humanId": {
+                                             "pattern": "[0-9a-f]{24}",
+                                             "type": "string"
+                                          },
+                                          "timestamp": {
+                                             "title": "Date",
+                                             "type": "string",
+                                             "format": "date-time"
+                                          }
+                                       }
+                                    }
+                                 ]
+                              },
+                              {
+                                 "type": "object",
+                                 "properties": {
+                                    "efficiency": {
+                                       "maximum": 1,
+                                       "minimum": 0,
+                                       "type": "number"
+                                    },
+                                    "mainSleep": {
+                                       "type": "boolean"
+                                    },
+                                    "numberOfWakeups": {
+                                       "maximum": 3,
+                                       "minimum": 0,
+                                       "type": "integer"
+                                    },
+                                    "timeAfterWakeup": {
+                                       "maximum": 30,
+                                       "minimum": 0,
+                                       "type": "integer"
+                                    },
+                                    "timeToFallAsleep": {
+                                       "maximum": 20,
+                                       "minimum": 0,
+                                       "type": "integer"
+                                    },
+                                    "startTime": {
+                                       "pattern": "2[1-3]:[0-5][0-9]",
+                                       "type": "string"
+                                    },
+                                    "endTime": {
+                                       "pattern": "0[6-9]:[0-5][0-9]",
+                                       "type": "string"
+                                    },
+                                    "day": {
+                                       "type": "string"
+                                    }
+                                 }
+                              }
+                           ]
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/heart_rate": {
+         "get": {
+            "summary": "Latest Heart Rate",
+            "description": "Returns the latest heart rate",
+            "operationId": "get-human-heart_rate",
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "title": "HeartRateResp",
+                           "allOf": [
+                              {
+                                 "title": "WearableBaseResp",
+                                 "allOf": [
+                                    {
+                                       "title": "BaseResp",
+                                       "required": [
+                                          "createdAt",
+                                          "id",
+                                          "source",
+                                          "updatedAt"
+                                       ],
+                                       "type": "object",
+                                       "properties": {
+                                          "createdAt": {
+                                             "type": "string"
+                                          },
+                                          "source": {
+                                             "minLength": 1,
+                                             "type": "string",
+                                             "enum": [
+                                                "encounter",
+                                                "narrative",
+                                                "diagnosed"
+                                             ]
+                                          },
+                                          "id": {
+                                             "minLength": 1,
+                                             "pattern": "[0-9a-f]{24}",
+                                             "type": "string"
+                                          },
+                                          "updatedAt": {
+                                             "type": "string"
+                                          }
+                                       }
+                                    },
+                                    {
+                                       "required": [
+                                          "humanId",
+                                          "timestamp"
+                                       ],
+                                       "type": "object",
+                                       "properties": {
+                                          "humanId": {
+                                             "pattern": "[0-9a-f]{24}",
+                                             "type": "string"
+                                          },
+                                          "timestamp": {
+                                             "title": "Date",
+                                             "type": "string",
+                                             "format": "date-time"
+                                          }
+                                       }
+                                    }
+                                 ]
+                              },
+                              {
+                                 "type": "object",
+                                 "properties": {
+                                    "unit": {
+                                       "type": "string",
+                                       "enum": [
+                                          "bpm"
+                                       ]
+                                    },
+                                    "value": {
+                                       "maximum": 200,
+                                       "minimum": 35,
+                                       "type": "integer"
+                                    }
+                                 }
+                              }
+                           ]
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/heart_rate/readings": {
+         "get": {
+            "summary": "All Heart Rates",
+            "description": "Returns all heart rate readings",
+            "operationId": "get-human-heart_rate-readings",
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "maxItems": 10,
+                           "type": "array",
+                           "items": {
+                              "title": "HeartRateResp",
+                              "allOf": [
+                                 {
+                                    "title": "WearableBaseResp",
+                                    "allOf": [
+                                       {
+                                          "title": "BaseResp",
+                                          "required": [
+                                             "createdAt",
+                                             "id",
+                                             "source",
+                                             "updatedAt"
+                                          ],
+                                          "type": "object",
+                                          "properties": {
+                                             "createdAt": {
+                                                "type": "string"
+                                             },
+                                             "source": {
+                                                "minLength": 1,
+                                                "type": "string",
+                                                "enum": [
+                                                   "encounter",
+                                                   "narrative",
+                                                   "diagnosed"
+                                                ]
+                                             },
+                                             "id": {
+                                                "minLength": 1,
+                                                "pattern": "[0-9a-f]{24}",
+                                                "type": "string"
+                                             },
+                                             "updatedAt": {
+                                                "type": "string"
+                                             }
+                                          }
+                                       },
+                                       {
+                                          "required": [
+                                             "humanId",
+                                             "timestamp"
+                                          ],
+                                          "type": "object",
+                                          "properties": {
+                                             "humanId": {
+                                                "pattern": "[0-9a-f]{24}",
+                                                "type": "string"
+                                             },
+                                             "timestamp": {
+                                                "title": "Date",
+                                                "type": "string",
+                                                "format": "date-time"
+                                             }
+                                          }
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "type": "object",
+                                    "properties": {
+                                       "unit": {
+                                          "type": "string",
+                                          "enum": [
+                                             "bpm"
+                                          ]
+                                       },
+                                       "value": {
+                                          "maximum": 200,
+                                          "minimum": 35,
+                                          "type": "integer"
+                                       }
+                                    }
+                                 }
+                              ]
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/blood_glucose": {
+         "get": {
+            "summary": "Blood glucose",
+            "description": "Returns the latest blood glucose reading",
+            "operationId": "get-human-blood_glucose-latest",
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "title": "BloodGlucoseResp",
+                           "allOf": [
+                              {
+                                 "title": "WearableBaseResp",
+                                 "allOf": [
+                                    {
+                                       "title": "BaseResp",
+                                       "required": [
+                                          "createdAt",
+                                          "id",
+                                          "source",
+                                          "updatedAt"
+                                       ],
+                                       "type": "object",
+                                       "properties": {
+                                          "createdAt": {
+                                             "type": "string"
+                                          },
+                                          "source": {
+                                             "minLength": 1,
+                                             "type": "string",
+                                             "enum": [
+                                                "encounter",
+                                                "narrative",
+                                                "diagnosed"
+                                             ]
+                                          },
+                                          "id": {
+                                             "minLength": 1,
+                                             "pattern": "[0-9a-f]{24}",
+                                             "type": "string"
+                                          },
+                                          "updatedAt": {
+                                             "type": "string"
+                                          }
+                                       }
+                                    },
+                                    {
+                                       "required": [
+                                          "humanId",
+                                          "timestamp"
+                                       ],
+                                       "type": "object",
+                                       "properties": {
+                                          "humanId": {
+                                             "pattern": "[0-9a-f]{24}",
+                                             "type": "string"
+                                          },
+                                          "timestamp": {
+                                             "title": "Date",
+                                             "type": "string",
+                                             "format": "date-time"
+                                          }
+                                       }
+                                    }
+                                 ]
+                              },
+                              {
+                                 "required": [
+                                    "mealTag",
+                                    "medicationTag",
+                                    "notes",
+                                    "unit",
+                                    "value"
+                                 ],
+                                 "type": "object",
+                                 "properties": {
+                                    "unit": {
+                                       "type": "string",
+                                       "enum": [
+                                          "mg/dl"
+                                       ]
+                                    },
+                                    "notes": {
+                                       "type": "string",
+                                       "enum": [
+                                          "-"
+                                       ]
+                                    },
+                                    "medicationTag": {
+                                       "type": "string",
+                                       "enum": [
+                                          "before medication",
+                                          "after medication"
+                                       ]
+                                    },
+                                    "value": {
+                                       "maximum": 130,
+                                       "minimum": 80,
+                                       "type": "number"
+                                    },
+                                    "mealTag": {
+                                       "type": "string",
+                                       "enum": [
+                                          "before meal",
+                                          "after meal"
+                                       ]
+                                    }
+                                 }
+                              }
+                           ]
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/activities": {
+         "get": {
+            "summary": "Activities",
+            "description": "Return a list of activity segments",
+            "operationId": "get-human-activities",
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {
+                              "allOf": [
+                                 {
+                                    "title": "WearableBaseResp",
+                                    "allOf": [
+                                       {
+                                          "title": "BaseResp",
+                                          "required": [
+                                             "createdAt",
+                                             "id",
+                                             "source",
+                                             "updatedAt"
+                                          ],
+                                          "type": "object",
+                                          "properties": {
+                                             "createdAt": {
+                                                "type": "string"
+                                             },
+                                             "source": {
+                                                "minLength": 1,
+                                                "type": "string",
+                                                "enum": [
+                                                   "encounter",
+                                                   "narrative",
+                                                   "diagnosed"
+                                                ]
+                                             },
+                                             "id": {
+                                                "minLength": 1,
+                                                "pattern": "[0-9a-f]{24}",
+                                                "type": "string"
+                                             },
+                                             "updatedAt": {
+                                                "type": "string"
+                                             }
+                                          }
+                                       },
+                                       {
+                                          "required": [
+                                             "humanId",
+                                             "timestamp"
+                                          ],
+                                          "type": "object",
+                                          "properties": {
+                                             "humanId": {
+                                                "pattern": "[0-9a-f]{24}",
+                                                "type": "string"
+                                             },
+                                             "timestamp": {
+                                                "title": "Date",
+                                                "type": "string",
+                                                "format": "date-time"
+                                             }
+                                          }
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "required": [
+                                       "calories",
+                                       "distance",
+                                       "duration",
+                                       "endTime",
+                                       "sourceData",
+                                       "startTime",
+                                       "steps",
+                                       "type"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                       "duration": {
+                                          "maximum": 3000,
+                                          "minimum": 300,
+                                          "type": "integer"
+                                       },
+                                       "distance": {
+                                          "maximum": 30000,
+                                          "minimum": 3000,
+                                          "type": "integer"
+                                       },
+                                       "startTime": {
+                                          "type": "string"
+                                       },
+                                       "calories": {
+                                          "maximum": 500,
+                                          "minimum": 200,
+                                          "type": "integer"
+                                       },
+                                       "endTime": {
+                                          "type": "string"
+                                       },
+                                       "sourceData": {
+                                          "type": "object"
+                                       },
+                                       "type": {
+                                          "type": "string",
+                                          "enum": [
+                                             "walking",
+                                             "running",
+                                             "cycling"
+                                          ]
+                                       },
+                                       "steps": {
+                                          "maximum": 20000,
+                                          "minimum": 2000,
+                                          "type": "integer"
+                                       }
+                                    }
+                                 }
+                              ]
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/blood_glucose/readings/{id}": {
+         "get": {
+            "summary": "Blood Glucose",
+            "description": "Return a specific blood glucose reading",
+            "operationId": "get-human-blood_glucose-readings-id",
+            "parameters": [
+               {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "title": "BloodGlucoseResp",
+                           "allOf": [
+                              {
+                                 "title": "WearableBaseResp",
+                                 "allOf": [
+                                    {
+                                       "title": "BaseResp",
+                                       "required": [
+                                          "createdAt",
+                                          "id",
+                                          "source",
+                                          "updatedAt"
+                                       ],
+                                       "type": "object",
+                                       "properties": {
+                                          "createdAt": {
+                                             "type": "string"
+                                          },
+                                          "source": {
+                                             "minLength": 1,
+                                             "type": "string",
+                                             "enum": [
+                                                "encounter",
+                                                "narrative",
+                                                "diagnosed"
+                                             ]
+                                          },
+                                          "id": {
+                                             "minLength": 1,
+                                             "pattern": "[0-9a-f]{24}",
+                                             "type": "string"
+                                          },
+                                          "updatedAt": {
+                                             "type": "string"
+                                          }
+                                       }
+                                    },
+                                    {
+                                       "required": [
+                                          "humanId",
+                                          "timestamp"
+                                       ],
+                                       "type": "object",
+                                       "properties": {
+                                          "humanId": {
+                                             "pattern": "[0-9a-f]{24}",
+                                             "type": "string"
+                                          },
+                                          "timestamp": {
+                                             "title": "Date",
+                                             "type": "string",
+                                             "format": "date-time"
+                                          }
+                                       }
+                                    }
+                                 ]
+                              },
+                              {
+                                 "required": [
+                                    "mealTag",
+                                    "medicationTag",
+                                    "notes",
+                                    "unit",
+                                    "value"
+                                 ],
+                                 "type": "object",
+                                 "properties": {
+                                    "unit": {
+                                       "type": "string",
+                                       "enum": [
+                                          "mg/dl"
+                                       ]
+                                    },
+                                    "notes": {
+                                       "type": "string",
+                                       "enum": [
+                                          "-"
+                                       ]
+                                    },
+                                    "medicationTag": {
+                                       "type": "string",
+                                       "enum": [
+                                          "before medication",
+                                          "after medication"
+                                       ]
+                                    },
+                                    "value": {
+                                       "maximum": 130,
+                                       "minimum": 80,
+                                       "type": "number"
+                                    },
+                                    "mealTag": {
+                                       "type": "string",
+                                       "enum": [
+                                          "before meal",
+                                          "after meal"
+                                       ]
+                                    }
+                                 }
+                              }
+                           ]
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   },
+   "components": {
+      "schemas": {
+         "ActivityResp": {
+            "allOf": [
+               {
+                  "title": "WearableBaseResp",
+                  "allOf": [
+                     {
+                        "title": "BaseResp",
+                        "required": [
+                           "createdAt",
+                           "id",
+                           "source",
+                           "updatedAt"
+                        ],
+                        "type": "object",
+                        "properties": {
+                           "id": {
+                              "minLength": 1,
+                              "pattern": "[0-9a-f]{24}",
+                              "type": "string"
+                           },
+                           "source": {
+                              "minLength": 1,
+                              "type": "string",
+                              "enum": [
+                                 "encounter",
+                                 "narrative",
+                                 "diagnosed"
+                              ]
+                           },
+                           "updatedAt": {
+                              "type": "string",
+                              "x-faker": "date.recent"
+                           },
+                           "createdAt": {
+                              "type": "string",
+                              "x-faker": "date.past"
+                           }
+                        }
+                     },
+                     {
+                        "required": [
+                           "humanId",
+                           "timestamp"
+                        ],
+                        "type": "object",
+                        "properties": {
+                           "humanId": {
+                              "pattern": "[0-9a-f]{24}",
+                              "type": "string"
+                           },
+                           "timestamp": {
+                              "title": "Date",
+                              "type": "string",
+                              "format": "date-time"
+                           }
+                        }
+                     }
+                  ]
+               },
+               {
+                  "required": [
+                     "calories",
+                     "distance",
+                     "duration",
+                     "endTime",
+                     "sourceData",
+                     "startTime",
+                     "steps",
+                     "type"
+                  ],
+                  "type": "object",
+                  "properties": {
+                     "startTime": {
+                        "type": "string",
+                        "x-faker": "date.past"
+                     },
+                     "endTime": {
+                        "type": "string",
+                        "x-faker": "date.recent"
+                     },
+                     "type": {
+                        "type": "string",
+                        "enum": [
+                           "walking",
+                           "running",
+                           "cycling"
+                        ]
+                     },
+                     "duration": {
+                        "maximum": 3000,
+                        "minimum": 300,
+                        "type": "integer"
+                     },
+                     "distance": {
+                        "maximum": 30000,
+                        "minimum": 3000,
+                        "type": "integer"
+                     },
+                     "steps": {
+                        "maximum": 20000,
+                        "minimum": 2000,
+                        "type": "integer"
+                     },
+                     "calories": {
+                        "maximum": 500,
+                        "minimum": 200,
+                        "type": "integer"
+                     },
+                     "sourceData": {
+                        "type": "object"
+                     }
+                  }
+               }
+            ]
+         },
+         "WearableBaseResp": {
+            "title": "WearableBaseResp",
+            "allOf": [
+               {
+                  "title": "BaseResp",
+                  "required": [
+                     "createdAt",
+                     "id",
+                     "source",
+                     "updatedAt"
+                  ],
+                  "type": "object",
+                  "properties": {
+                     "id": {
+                        "minLength": 1,
+                        "pattern": "[0-9a-f]{24}",
+                        "type": "string"
+                     },
+                     "source": {
+                        "minLength": 1,
+                        "type": "string",
+                        "enum": [
+                           "encounter",
+                           "narrative",
+                           "diagnosed"
+                        ]
+                     },
+                     "updatedAt": {
+                        "type": "string",
+                        "x-faker": "date.recent"
+                     },
+                     "createdAt": {
+                        "type": "string",
+                        "x-faker": "date.past"
+                     }
+                  }
+               },
+               {
+                  "required": [
+                     "humanId",
+                     "timestamp"
+                  ],
+                  "type": "object",
+                  "properties": {
+                     "humanId": {
+                        "pattern": "[0-9a-f]{24}",
+                        "type": "string"
+                     },
+                     "timestamp": {
+                        "title": "Date",
+                        "type": "string",
+                        "format": "date-time"
+                     }
+                  }
+               }
+            ]
+         },
+         "BloodGlucoseResp": {
+            "title": "BloodGlucoseResp",
+            "allOf": [
+               {
+                  "title": "WearableBaseResp",
+                  "allOf": [
+                     {
+                        "title": "BaseResp",
+                        "required": [
+                           "createdAt",
+                           "id",
+                           "source",
+                           "updatedAt"
+                        ],
+                        "type": "object",
+                        "properties": {
+                           "id": {
+                              "minLength": 1,
+                              "pattern": "[0-9a-f]{24}",
+                              "type": "string"
+                           },
+                           "source": {
+                              "minLength": 1,
+                              "type": "string",
+                              "enum": [
+                                 "encounter",
+                                 "narrative",
+                                 "diagnosed"
+                              ]
+                           },
+                           "updatedAt": {
+                              "type": "string",
+                              "x-faker": "date.recent"
+                           },
+                           "createdAt": {
+                              "type": "string",
+                              "x-faker": "date.past"
+                           }
+                        }
+                     },
+                     {
+                        "required": [
+                           "humanId",
+                           "timestamp"
+                        ],
+                        "type": "object",
+                        "properties": {
+                           "humanId": {
+                              "pattern": "[0-9a-f]{24}",
+                              "type": "string"
+                           },
+                           "timestamp": {
+                              "title": "Date",
+                              "type": "string",
+                              "format": "date-time"
+                           }
+                        }
+                     }
+                  ]
+               },
+               {
+                  "required": [
+                     "mealTag",
+                     "medicationTag",
+                     "notes",
+                     "unit",
+                     "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                     "value": {
+                        "maximum": 130,
+                        "minimum": 80,
+                        "type": "number"
+                     },
+                     "unit": {
+                        "type": "string",
+                        "enum": [
+                           "mg/dl"
+                        ]
+                     },
+                     "notes": {
+                        "type": "string",
+                        "enum": [
+                           "-"
+                        ]
+                     },
+                     "mealTag": {
+                        "type": "string",
+                        "enum": [
+                           "before meal",
+                           "after meal"
+                        ]
+                     },
+                     "medicationTag": {
+                        "type": "string",
+                        "enum": [
+                           "before medication",
+                           "after medication"
+                        ]
+                     }
+                  }
+               }
+            ]
+         },
+         "HeartRateResp": {
+            "title": "HeartRateResp",
+            "allOf": [
+               {
+                  "title": "WearableBaseResp",
+                  "allOf": [
+                     {
+                        "title": "BaseResp",
+                        "required": [
+                           "createdAt",
+                           "id",
+                           "source",
+                           "updatedAt"
+                        ],
+                        "type": "object",
+                        "properties": {
+                           "id": {
+                              "minLength": 1,
+                              "pattern": "[0-9a-f]{24}",
+                              "type": "string"
+                           },
+                           "source": {
+                              "minLength": 1,
+                              "type": "string",
+                              "enum": [
+                                 "encounter",
+                                 "narrative",
+                                 "diagnosed"
+                              ]
+                           },
+                           "updatedAt": {
+                              "type": "string",
+                              "x-faker": "date.recent"
+                           },
+                           "createdAt": {
+                              "type": "string",
+                              "x-faker": "date.past"
+                           }
+                        }
+                     },
+                     {
+                        "required": [
+                           "humanId",
+                           "timestamp"
+                        ],
+                        "type": "object",
+                        "properties": {
+                           "humanId": {
+                              "pattern": "[0-9a-f]{24}",
+                              "type": "string"
+                           },
+                           "timestamp": {
+                              "title": "Date",
+                              "type": "string",
+                              "format": "date-time"
+                           }
+                        }
+                     }
+                  ]
+               },
+               {
+                  "type": "object",
+                  "properties": {
+                     "value": {
+                        "maximum": 200,
+                        "minimum": 35,
+                        "type": "integer"
+                     },
+                     "unit": {
+                        "type": "string",
+                        "enum": [
+                           "bpm"
+                        ]
+                     }
+                  }
+               }
+            ]
+         },
+         "SleepResp": {
+            "title": "SleepResp",
+            "allOf": [
+               {
+                  "title": "WearableBaseResp",
+                  "allOf": [
+                     {
+                        "title": "BaseResp",
+                        "required": [
+                           "createdAt",
+                           "id",
+                           "source",
+                           "updatedAt"
+                        ],
+                        "type": "object",
+                        "properties": {
+                           "id": {
+                              "minLength": 1,
+                              "pattern": "[0-9a-f]{24}",
+                              "type": "string"
+                           },
+                           "source": {
+                              "minLength": 1,
+                              "type": "string",
+                              "enum": [
+                                 "encounter",
+                                 "narrative",
+                                 "diagnosed"
+                              ]
+                           },
+                           "updatedAt": {
+                              "type": "string",
+                              "x-faker": "date.recent"
+                           },
+                           "createdAt": {
+                              "type": "string",
+                              "x-faker": "date.past"
+                           }
+                        }
+                     },
+                     {
+                        "required": [
+                           "humanId",
+                           "timestamp"
+                        ],
+                        "type": "object",
+                        "properties": {
+                           "humanId": {
+                              "pattern": "[0-9a-f]{24}",
+                              "type": "string"
+                           },
+                           "timestamp": {
+                              "title": "Date",
+                              "type": "string",
+                              "format": "date-time"
+                           }
+                        }
+                     }
+                  ]
+               },
+               {
+                  "type": "object",
+                  "properties": {
+                     "day": {
+                        "type": "string",
+                        "x-faker": "date.weekday"
+                     },
+                     "startTime": {
+                        "pattern": "2[1-3]:[0-5][0-9]",
+                        "type": "string"
+                     },
+                     "endTime": {
+                        "pattern": "0[6-9]:[0-5][0-9]",
+                        "type": "string"
+                     },
+                     "mainSleep": {
+                        "type": "boolean"
+                     },
+                     "efficiency": {
+                        "maximum": 1,
+                        "minimum": 0,
+                        "type": "number"
+                     },
+                     "timeToFallAsleep": {
+                        "maximum": 20,
+                        "minimum": 0,
+                        "type": "integer"
+                     },
+                     "timeAfterWakeup": {
+                        "maximum": 30,
+                        "minimum": 0,
+                        "type": "integer"
+                     },
+                     "numberOfWakeups": {
+                        "maximum": 3,
+                        "minimum": 0,
+                        "type": "integer"
+                     }
+                  }
+               }
+            ]
+         },
+         "BaseResp": {
+            "title": "BaseResp",
+            "required": [
+               "createdAt",
+               "id",
+               "source",
+               "updatedAt"
+            ],
+            "type": "object",
+            "properties": {
+               "id": {
+                  "minLength": 1,
+                  "pattern": "[0-9a-f]{24}",
+                  "type": "string"
+               },
+               "source": {
+                  "minLength": 1,
+                  "type": "string",
+                  "enum": [
+                     "encounter",
+                     "narrative",
+                     "diagnosed"
+                  ]
+               },
+               "updatedAt": {
+                  "type": "string",
+                  "x-faker": "date.recent"
+               },
+               "createdAt": {
+                  "type": "string",
+                  "x-faker": "date.past"
+               }
+            }
+         },
+         "Date": {
+            "title": "Date",
+            "type": "string",
+            "format": "date-time"
+         }
+      },
+      "securitySchemes": {
+         "API Key": {
+            "type": "apiKey",
+            "description": "API Key",
+            "name": "KeyId",
+            "in": "header"
+         }
+      }
+   },
+   "x-axway": {
+      "serviceType": "rest",
+      "image": "/api/portal/v1.3/discovery/swagger/apis/6c3cd51c-5dd0-404b-8faa-245eea89a869/image",
+      "basePaths": [
+         "https://ptx136.demo.axway.com:8065"
+      ],
+      "expired": false,
+      "retirementDate": 0,
+      "corsEnabled": true,
+      "availableSDK": {
+         "ios-swift": "/discovery/sdk/6c3cd51c-5dd0-404b-8faa-245eea89a869/ios-swift",
+         "titanium": "/discovery/sdk/6c3cd51c-5dd0-404b-8faa-245eea89a869/titanium",
+         "android": "/discovery/sdk/6c3cd51c-5dd0-404b-8faa-245eea89a869/android",
+         "nodejs": "/discovery/sdk/6c3cd51c-5dd0-404b-8faa-245eea89a869/nodejs"
+      },
+      "deprecated": false,
+      "apiResourceType": "oas30",
+      "state": "published",
+      "id": "6c3cd51c-5dd0-404b-8faa-245eea89a869",
+      "accessGrantedDate": 1625574052834,
+      "tags": {
+         "Team": [
+            "IoT innovation"
+         ]
+      }
+   },
+   "servers": [
+      {
+         "url": "https://ptx136.demo.axway.com:8065/fitbit"
+      }
+   ]
+}

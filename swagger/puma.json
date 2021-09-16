@@ -1,0 +1,206 @@
+{
+   "openapi": "3.0.1",
+   "info": {
+      "title": "Puma coupon system",
+      "description": "Get coupons to buy new *Puma* products",
+      "contact": {
+         "name": "demo",
+         "email": "demo@axway.com"
+      },
+      "version": "1.0.1",
+      "x-summary": "Puma, Forever Faster!"
+   },
+   "security": [
+      {
+         "API Key": []
+      }
+   ],
+   "tags": [
+      {
+         "name": "coupon"
+      },
+      {
+         "name": "puma"
+      }
+   ],
+   "paths": {
+      "/coupon": {
+         "get": {
+            "summary": "Get a puma coupon",
+            "description": "Get a coupon for puma",
+            "operationId": "get-puma-coupon",
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "title": "Coupon",
+                           "type": "object",
+                           "properties": {
+                              "amount": {
+                                 "type": "string",
+                                 "enum": [
+                                    "10€",
+                                    "20€",
+                                    "5€",
+                                    "15€"
+                                 ]
+                              },
+                              "code": {
+                                 "type": "string",
+                                 "enum": [
+                                    "SPRINGOFF",
+                                    "BACKTOSCHOOL",
+                                    "XMASGIFT",
+                                    "SUMMERTIME",
+                                    "HLLWN",
+                                    "MOTHERSDAY",
+                                    "FATHERSDAY",
+                                    "SWAG_ON",
+                                    "JUSTDOIT"
+                                 ]
+                              },
+                              "recipient": {
+                                 "type": "string",
+                                 "format": "email"
+                              },
+                              "validity": {
+                                 "title": "DateRange",
+                                 "type": "object",
+                                 "properties": {
+                                    "start": {
+                                       "type": "string"
+                                    },
+                                    "end": {
+                                       "type": "string"
+                                    }
+                                 }
+                              },
+                              "id": {
+                                 "pattern": "[0-9]{7}",
+                                 "type": "string"
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   },
+   "components": {
+      "schemas": {
+         "pumaDateRange": {
+            "title": "DateRange",
+            "type": "object",
+            "properties": {
+               "start": {
+                  "type": "string",
+                  "x-faker": "date.past"
+               },
+               "end": {
+                  "type": "string",
+                  "x-faker": "date.future"
+               }
+            }
+         },
+         "pumaCoupon": {
+            "title": "Coupon",
+            "type": "object",
+            "properties": {
+               "id": {
+                  "pattern": "[0-9]{7}",
+                  "type": "string"
+               },
+               "code": {
+                  "type": "string",
+                  "enum": [
+                     "SPRINGOFF",
+                     "BACKTOSCHOOL",
+                     "XMASGIFT",
+                     "SUMMERTIME",
+                     "HLLWN",
+                     "MOTHERSDAY",
+                     "FATHERSDAY",
+                     "SWAG_ON",
+                     "JUSTDOIT"
+                  ]
+               },
+               "validity": {
+                  "title": "DateRange",
+                  "type": "object",
+                  "properties": {
+                     "start": {
+                        "type": "string",
+                        "x-faker": "date.past"
+                     },
+                     "end": {
+                        "type": "string",
+                        "x-faker": "date.future"
+                     }
+                  }
+               },
+               "amount": {
+                  "type": "string",
+                  "enum": [
+                     "10€",
+                     "20€",
+                     "5€",
+                     "15€"
+                  ]
+               },
+               "recipient": {
+                  "type": "string",
+                  "format": "email",
+                  "x-faker": "internet.email"
+               }
+            },
+            "x-examples": {}
+         }
+      },
+      "securitySchemes": {
+         "API Key": {
+            "type": "apiKey",
+            "description": "API Key",
+            "name": "KeyId",
+            "in": "header"
+         }
+      }
+   },
+   "x-axway": {
+      "serviceType": "rest",
+      "image": "/api/portal/v1.3/discovery/swagger/apis/b085e790-53d4-41b4-ae70-54421943cad9/image",
+      "basePaths": [
+         "https://ptx136.demo.axway.com:8065"
+      ],
+      "expired": false,
+      "retirementDate": 0,
+      "corsEnabled": true,
+      "availableSDK": {
+         "ios-swift": "/discovery/sdk/b085e790-53d4-41b4-ae70-54421943cad9/ios-swift",
+         "titanium": "/discovery/sdk/b085e790-53d4-41b4-ae70-54421943cad9/titanium",
+         "android": "/discovery/sdk/b085e790-53d4-41b4-ae70-54421943cad9/android",
+         "nodejs": "/discovery/sdk/b085e790-53d4-41b4-ae70-54421943cad9/nodejs"
+      },
+      "deprecated": false,
+      "apiResourceType": "oas30",
+      "state": "published",
+      "id": "b085e790-53d4-41b4-ae70-54421943cad9",
+      "accessGrantedDate": 1624555960459,
+      "tags": {
+         "Generated": [
+            "true"
+         ],
+         "Team": [
+            "Loyalty"
+         ]
+      }
+   },
+   "servers": [
+      {
+         "url": "https://ptx136.demo.axway.com:8065/puma"
+      }
+   ]
+}

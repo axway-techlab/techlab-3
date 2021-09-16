@@ -1,0 +1,417 @@
+{
+	"schemaVersion": "4",
+	"info": {
+		"name": "Good Food Good Life",
+		"description": "Good Food Good Life",
+		"author": "support@axway.com",
+		"license": "ISC"
+	},
+	"parameter": {
+		"properties": {
+			"params": {
+				"type": "object",
+				"description": "The parameters from the endpoint.",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The username"
+					}
+				},
+				"additionalProperties": false,
+				"required": [
+					"id"
+				]
+			},
+			"request": {
+				"type": "object",
+				"description": "The HTTP request."
+			},
+			"config": {
+				"type": "object",
+				"description": "The service's configuration"
+			},
+			"env": {
+				"type": "object",
+				"description": "The host OS environment"
+			}
+		},
+		"additionalProperties": false,
+		"required": [
+			"params",
+			"request",
+			"config",
+			"env"
+		]
+	},
+	"start": "apple.1",
+	"nodes": {
+		"response.success": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "No luck",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"value": "200",
+					"type": "number",
+					"metaName": "Status",
+					"metaDescription": "The HTTP status code"
+				},
+				{
+					"name": "body",
+					"type": "object",
+					"value": "{\"result\": \"no coupon for you, sorry\"}",
+					"metaName": "Body",
+					"metaDescription": "The response payload"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"metaName": "Next"
+				}
+			},
+			"metaMethod": "Set HTTP Response"
+		},
+		"apple.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/apple",
+			"name": "get-human-heart_rate",
+			"method": "get-human-heart_rate",
+			"parameters": [],
+			"outputs": {
+				"200": {
+					"routes": [
+						"condition.1"
+					],
+					"context": "$.heartbeat",
+					"metaName": "200"
+				},
+				"error": {
+					"routes": [
+						"http.1"
+					],
+					"context": "$.error",
+					"metaName": "Error"
+				},
+				"default": {
+					"routes": [
+						"http.1"
+					],
+					"context": "$.response",
+					"metaName": "Default"
+				}
+			},
+			"authorizations": [
+				{
+					"name": "API Key",
+					"type": "string",
+					"value": "\"3d69de82-975e-4640-a72f-a32b35cf6a7c\""
+				}
+			],
+			"metaMethod": "get-human-heart_rate"
+		},
+		"http.1": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Set HTTP Response",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "400",
+					"metaName": "Status",
+					"metaDescription": "The HTTP status code"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": [],
+					"metaName": "Next"
+				}
+			},
+			"metaMethod": "Set HTTP Response"
+		},
+		"condition.1": {
+			"type": "nodehandler://axway-flow/condition",
+			"name": "Less Than or Equal",
+			"method": "less-than-equal",
+			"parameters": [
+				{
+					"name": "source",
+					"type": "jsonpath",
+					"value": "$.heartbeat.data.value",
+					"metaName": "Source",
+					"metaDescription": "The input to test."
+				},
+				{
+					"name": "value",
+					"type": "number",
+					"value": "90"
+				}
+			],
+			"outputs": {
+				"true": {
+					"routes": [
+						"javascript.1"
+					],
+					"context": "$.lessThanEqual",
+					"metaName": "True"
+				},
+				"false": {
+					"routes": [
+						"response.success"
+					],
+					"context": "$.lessThanEqual",
+					"metaName": "False"
+				}
+			},
+			"metaMethod": "Less Than or Equal"
+		},
+		"http.2": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "winner",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "200",
+					"metaName": "Status",
+					"metaDescription": "The HTTP status code"
+				},
+				{
+					"name": "headers",
+					"type": "object",
+					"value": "{\"partner\": \"decathlon\"}",
+					"metaName": "Headers",
+					"metaDescription": "Key-value pairs of headers"
+				},
+				{
+					"name": "body",
+					"type": "jsonpath",
+					"value": "$.response.data",
+					"metaName": "Body",
+					"metaDescription": "The response payload"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": [],
+					"metaName": "Next"
+				}
+			},
+			"metaMethod": "Set HTTP Response"
+		},
+		"javascript.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-javascript/javascript",
+			"name": "Go for a coupon!",
+			"method": "Execute",
+			"parameters": [
+				{
+					"name": "data",
+					"type": "jsonpath",
+					"value": "$.heartbeat.data.value",
+					"metaName": "Data",
+					"metaDescription": "The value to apply as the `data` argument of the JavaScript code. For objects and arrays, `data` is passed by reference."
+				},
+				{
+					"name": "code",
+					"type": "string",
+					"value": "\"var parity = data % 2;\\n  console.log(\\\"*****\\\");\\n  console.log(parity);\\n  console.log(data);\\n  console.log(\\\"*****\\\");\\n  return parity;\"",
+					"metaName": "Code",
+					"metaDescription": "A JavaScript function body. Supports `await` and returning promises. `data` is the value of the Data parameter. `logger` is the API Builder logger. See the docs for more info: https://docs.axway.com/bundle/API_Builder_4x_allOS_en/page/javascript_flow-node.html"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.result",
+					"routes": [
+						"condition.2"
+					],
+					"metaName": "Next"
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [],
+					"metaName": "Error"
+				}
+			},
+			"metaMethod": "Execute"
+		},
+		"condition.2": {
+			"type": "nodehandler://axway-flow/condition",
+			"name": "Select provider",
+			"method": "equals",
+			"parameters": [
+				{
+					"name": "value",
+					"type": "number",
+					"value": "0",
+					"metaName": "Value",
+					"metaDescription": "The value to test input against."
+				},
+				{
+					"name": "source",
+					"type": "jsonpath",
+					"value": "$.result",
+					"metaName": "Source",
+					"metaDescription": "The input to test."
+				}
+			],
+			"outputs": {
+				"true": {
+					"routes": [
+						"decathlon.1"
+					],
+					"context": "$.equals",
+					"metaName": "True"
+				},
+				"false": {
+					"routes": [
+						"puma.1"
+					],
+					"context": "$.equals",
+					"metaName": "False"
+				}
+			},
+			"metaMethod": "Equals"
+		},
+		"puma.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/puma",
+			"name": "get-puma-coupon",
+			"method": "get-puma-coupon",
+			"parameters": [],
+			"outputs": {
+				"200": {
+					"context": "$.response",
+					"routes": [
+						"http.3"
+					],
+					"metaName": "200"
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [
+						"http.4"
+					],
+					"metaName": "Error"
+				},
+				"default": {
+					"context": "$.response",
+					"routes": [],
+					"metaName": "Default"
+				}
+			},
+			"authorizations": [
+				{
+					"name": "API Key",
+					"type": "string",
+					"value": "\"3d69de82-975e-4640-a72f-a32b35cf6a7c\""
+				}
+			],
+			"metaMethod": "get-puma-coupon"
+		},
+		"decathlon.1": {
+			"type": "nodehandler://@axway/api-builder-plugin-fn-swagger/decathlon",
+			"name": "get-decathlon-coupon",
+			"method": "get-decathlon-coupon",
+			"parameters": [],
+			"outputs": {
+				"200": {
+					"context": "$.response",
+					"routes": [
+						"http.2"
+					],
+					"metaName": "200"
+				},
+				"error": {
+					"context": "$.error",
+					"routes": [
+						"http.4"
+					],
+					"metaName": "Error"
+				},
+				"default": {
+					"context": "$.response",
+					"routes": [],
+					"metaName": "Default"
+				}
+			},
+			"authorizations": [
+				{
+					"name": "API Key",
+					"type": "string",
+					"value": "\"b737a13a-8abf-4f10-9094-b29e285a2359\""
+				}
+			],
+			"metaMethod": "get-decathlon-coupon"
+		},
+		"http.3": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "winner",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "200",
+					"metaName": "Status",
+					"metaDescription": "The HTTP status code"
+				},
+				{
+					"name": "headers",
+					"type": "object",
+					"value": "{\"partner\": \"puma\"}",
+					"metaName": "Headers",
+					"metaDescription": "Key-value pairs of headers"
+				},
+				{
+					"name": "body",
+					"type": "jsonpath",
+					"value": "$.response.data",
+					"metaName": "Body",
+					"metaDescription": "The response payload"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": [],
+					"metaName": "Next"
+				}
+			},
+			"metaMethod": "Set HTTP Response"
+		},
+		"http.4": {
+			"type": "nodehandler://axway-flow/http",
+			"name": "Set HTTP Response",
+			"method": "setresponse",
+			"parameters": [
+				{
+					"name": "status",
+					"type": "number",
+					"value": "500",
+					"metaName": "Status",
+					"metaDescription": "The HTTP status code"
+				},
+				{
+					"name": "body",
+					"type": "string",
+					"value": "\"Not available yet\"",
+					"metaName": "Body",
+					"metaDescription": "The response payload"
+				}
+			],
+			"outputs": {
+				"next": {
+					"context": "$.response",
+					"routes": [],
+					"metaName": "Next"
+				}
+			},
+			"metaMethod": "Set HTTP Response"
+		}
+	}
+}

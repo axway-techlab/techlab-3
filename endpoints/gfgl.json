@@ -1,0 +1,137 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "gfgl",
+    "description": "An API Builder service",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/gfgl",
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "paths": {
+    "/coupon/{id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "get coupon",
+            "schema": {
+              "$ref": "#/definitions/schema.gfgl_greeting"
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "schema": {
+              "$ref": "#/definitions/schema.gfgl_error"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/UnauthorizedError"
+            }
+          },
+          "413": {
+            "description": "Payload too large",
+            "schema": {
+              "$ref": "#/definitions/PayloadTooLargeError"
+            }
+          }
+        },
+        "summary": "Get a coupon",
+        "operationId": "get-coupon",
+        "parameters": [
+          {
+            "description": "The username",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [],
+        "x-flow": "gfgl-get-coupon"
+      }
+    }
+  },
+  "definitions": {
+    "UnauthorizedError": {
+      "type": "object",
+      "required": [
+        "message",
+        "success",
+        "id"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "id": {
+          "enum": [
+            "com.appcelerator.api.unauthorized"
+          ]
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "PayloadTooLargeError": {
+      "type": "object",
+      "required": [
+        "message",
+        "code",
+        "success",
+        "request-id"
+      ],
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "request-id": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "schema.gfgl_greeting": {
+      "type": "string",
+      "description": "A greeting message for the user"
+    },
+    "schema.gfgl_error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "description": "The error message"
+        }
+      },
+      "required": [
+        "error"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic",
+      "description": "Require authorized access to API"
+    }
+  },
+  "schemes": [
+    "http"
+  ]
+}
